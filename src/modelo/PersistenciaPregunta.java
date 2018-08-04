@@ -11,6 +11,9 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.Random;
+import java.util.Set;
 
 /**
  *
@@ -41,4 +44,39 @@ public class PersistenciaPregunta {
 	ArrayList<Pregunta> preguntas=(ArrayList<Pregunta>) ois.readObject();
 	return preguntas;
     }
+    
+    public static void actualizar(ArrayList<Pregunta> nuevas)throws Exception{
+        File file=new File("cuestionario.yo"); //Esta linea crea o sobrescribe un archivo
+       // preguntas.add(p);
+        
+        //Paso 2 es indicar que lo vamos a generar para escribirlo en el 
+        FileOutputStream fos =new FileOutputStream(file);
+        
+        //Paso 3 Escribir un objeto en el
+        ObjectOutputStream oos=new ObjectOutputStream(fos);
+        oos.writeObject(nuevas);
+        oos.close();    
+    }
+    
+    
+    
+    public static ArrayList<Opcion>opcionesAleatorias(ArrayList<Opcion> opciones){
+        ArrayList<Opcion>opcionesAleatorias=new ArrayList<>();
+        Set<Integer> enteros=new LinkedHashSet<>();
+        //enteros.add(numero);
+        while(enteros.size()<4){
+            
+            Random r=new Random();
+            int numero=r.nextInt(4); 
+            enteros.add(numero);
+            
+           }
+        for(Integer i:enteros){
+            opcionesAleatorias.add(opciones.get(i));
+        }
+         return opcionesAleatorias;
+               
+    
+    }
+    
 }
