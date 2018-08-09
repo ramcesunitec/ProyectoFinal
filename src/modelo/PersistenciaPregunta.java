@@ -58,7 +58,17 @@ public class PersistenciaPregunta {
         oos.close();    
     }
     
-    
+    public static void borrar(int indice) throws Exception{
+        ArrayList<Pregunta>preguntas=new ArrayList<>();
+        File file =new File("cuestionario.yo");
+        if(file.exists())preguntas=leer();
+        preguntas.remove(indice);
+        FileOutputStream fos =new FileOutputStream(file);
+        ObjectOutputStream oos=new ObjectOutputStream(fos);
+        oos.writeObject(preguntas);
+        oos.close();  
+        
+    }
     
     public static ArrayList<Opcion>opcionesAleatorias(ArrayList<Opcion> opciones){
         ArrayList<Opcion>opcionesAleatorias=new ArrayList<>();
@@ -77,6 +87,10 @@ public class PersistenciaPregunta {
          return opcionesAleatorias;
                
     
+    }
+
+    public static void borrar(ArrayList<Pregunta> pregunta) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

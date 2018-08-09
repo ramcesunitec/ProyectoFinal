@@ -5,6 +5,8 @@
  */
 package vista;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -20,6 +22,10 @@ import modelo.Pregunta;
 public class TestAplicacion extends javax.swing.JFrame {
 int numero=0;
 int tiempo=0;
+int respuestas;
+int solocinco=1;
+int correcta=0;
+String respuestaActual;
     /**
      * Creates new form TestAplicacion
      */
@@ -27,7 +33,11 @@ int tiempo=0;
         initComponents();
         setLocationRelativeTo(this);
         setSize(500, 300);
-        mostrarPregunta(numero++);                   
+        mostrarPregunta(numero++);    
+        txtRespuestasTotales.setVisible(false);
+        txtResultado.setVisible(false);
+        txtcorrectas.setVisible(false);
+        jLabel2.setVisible(false);
         Thread t1 = new Thread(new Runnable() {
             public void run() {
                 while (true) {
@@ -35,14 +45,70 @@ int tiempo=0;
                    try {
                         Thread.sleep(1000);
                         etiquetaTiempo.setText(""+tiempo);
-                        if(tiempo>=30)mostrarPregunta(numero++);
+                        if(tiempo>=30){
+                            mostrarPregunta(numero++);
+                        solocinco++;
+                        if(solocinco>5){
+                        jLabel2.setText("El resultado es "+correcta+" de 5");
+                        jLabel2.setVisible(true);
+                        break;
+                        }
+                        }
                        } catch (InterruptedException e) {
                     }
                 }
             }
         });
         t1.start();
+        
+        rb1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String texto=rb1.getText();
+                if(rb1.isSelected()){
+                    texto=""+texto;
+                    txtcorrectas.setText(texto);
+                }
+            }
+        });
+        
+        rb2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String texto=rb2.getText();
+                if(rb2.isSelected()){
+                    texto=""+texto;
+                    txtcorrectas.setText(texto);
+                }
+            }
+        });
+        
+        rb3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String texto=rb3.getText();
+                if(rb3.isSelected()){
+                    texto=""+texto;
+                    txtcorrectas.setText(texto);
+                }
+            }
+        });
+        
+        rb4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String texto=rb4.getText();
+                if(rb4.isSelected()){
+                    texto=""+texto;
+                    txtcorrectas.setText(texto);
+                }
+            }
+        });
+        
+               
     }
+    
+    
     
     public void mostrarPregunta(int numero){
         tiempo=0;
@@ -55,6 +121,8 @@ int tiempo=0;
             etiquetaPregunta.setText(p.getTitulo());
                 //Despues las opciones
             ArrayList<Opcion> opciones=p.getOpciones();
+            respuestaActual=opciones.get(0).getTitulo();
+            txtResultado.setText(respuestaActual);
                 //Aplicamos el algoritmo
             opciones=PersistenciaPregunta.opcionesAleatorias(opciones);
             rb1.setText(opciones.get(0).getTitulo());
@@ -68,7 +136,7 @@ int tiempo=0;
         
     }
     
-
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -90,6 +158,10 @@ int tiempo=0;
         rb3 = new javax.swing.JRadioButton();
         rb4 = new javax.swing.JRadioButton();
         jButton1 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        txtcorrectas = new javax.swing.JLabel();
+        txtResultado = new javax.swing.JLabel();
+        txtRespuestasTotales = new javax.swing.JLabel();
 
         jScrollPane1.setViewportView(jEditorPane1);
 
@@ -132,11 +204,32 @@ int tiempo=0;
         });
         getContentPane().add(jButton1);
 
+        jLabel2.setText("Resultado Final");
+        getContentPane().add(jLabel2);
+
+        txtcorrectas.setText("correctas");
+        getContentPane().add(txtcorrectas);
+
+        txtResultado.setText("Resultado");
+        getContentPane().add(txtResultado);
+
+        txtRespuestasTotales.setText("Respuestas");
+        getContentPane().add(txtRespuestasTotales);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        solocinco++;
+        if(txtcorrectas.getText().equals(txtResultado.getText())){
+            correcta++;
+        }
+        txtRespuestasTotales.setText(""+correcta);
+        if(solocinco>5){
+            jLabel2.setText("El resultado es: "+correcta);
+            jLabel2.setVisible(true);
+        }
         mostrarPregunta(numero++);
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -182,10 +275,14 @@ int tiempo=0;
     private javax.swing.JButton jButton1;
     private javax.swing.JEditorPane jEditorPane1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JRadioButton rb1;
     private javax.swing.JRadioButton rb2;
     private javax.swing.JRadioButton rb3;
     private javax.swing.JRadioButton rb4;
+    private javax.swing.JLabel txtRespuestasTotales;
+    private javax.swing.JLabel txtResultado;
+    private javax.swing.JLabel txtcorrectas;
     // End of variables declaration//GEN-END:variables
 }
